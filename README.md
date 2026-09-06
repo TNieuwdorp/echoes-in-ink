@@ -15,12 +15,12 @@ an opt-in fallback, never the default.
 # 0. one-time
 uv sync --extra dev                      # Python side
 (cd ui && npm install)                   # UI side
-uv tool install vllm                     # model server (needs vLLM >= 0.11 for Qwen3.8)
+uv tool install vllm                     # model server (needs vLLM >= 0.21 for Qwen3.8 and Gemma 4)
 uv tool install huggingface_hub          # gives the `hf` command; `hf auth login` for Gemma
-just download qwen38                     # ~56 GB; add gemma4 qwen36 later
+just download qwen38                     # FP8, ~27 GB; add gemma4 qwen36 later
 
 # 1. serve a model (terminal A) and benchmark it on the sample pages (terminal B)
-just serve qwen38
+just serve qwen38                        # GPU 0, port 8000; GPU=1 PORT=8001 just serve gemma4 runs beside it
 just bench qwen38                        # prints the CER/WER leaderboard against data/gold
 
 # 2. photograph or scan ten letters (see "Capturing the letters"), then
@@ -32,10 +32,23 @@ uv run echoes gold --promote             # reviewed pages -> data/gold, re-run `
 # 3. compare candidates by serving another preset and re-running `just bench <preset>`
 ```
 
-Presets in `scripts/serve_vllm.sh`: `qwen38` (Qwen3.8-27B, both GPUs), `qwen38-fp8` (one
-GPU), `gemma4` (Gemma 4 31B), `qwen36` (Qwen3.6-35B-A3B, fast sampler), `qwen35-122b`
-(int4 build of Qwen3.5-122B-A10B). The pipeline talks to whatever is on
-`http://localhost:8000/v1`; set `ECHOES_LOCAL_MODEL` to the served name.
+Presets in `scripts/serve_vllm.sh`, sized for one 48 GiB RTX 6000 Ada each (weights, then
+what is left for KV cache at `--max-model-len 32768`):
+
+| Preset | Checkpoint | Weights | GPUs | KV cache left |
+|---|---|---|---|---|
+| `qwen38` (default) | `Qwen/Qwen3.8-27B-FP8` | ~27 GiB | 1 | ~14 GiB, 7 sequences of 32k |
+| `gemma4` | `RedHatAI/gemma-4-31B-it-FP8-block` | ~29 GiB | 1 | ~12 GiB |
+| `qwen36` | `Qwen/Qwen3.6-35B-A3B-FP8` (fast sampler) | ~33 GiB | 1 | ~8 GiB, 13 sequences |
+| `qwen38-bf16` | `Qwen/Qwen3.8-27B` (one-off accuracy check) | 25 GiB per card | 2 | ~16 GiB per card |
+| `qwen35-122b` | `Qwen/Qwen3.5-122B-A10B-GPTQ-Int4` | 31 GiB per card | 2 | ~10 GiB per card |
+
+A bf16 27B is ~50 GiB of weights and does not fit one card, hence FP8 by default; Ada has
+FP8 tensor cores, and Qwen's own FP8 build benchmarks the same as bf16. The Qwen models are
+hybrids where only a quarter of the layers keep a KV cache (64 KiB per token for the 27B),
+so 32k of context costs about 2 GiB per sequence. `GPU=`, `PORT=`, `MAX_LEN=`, `MAX_IMAGES=`
+and `DRY_RUN=1` override the script. The pipeline reads `ECHOES_LOCAL_BASE_URL` and
+`ECHOES_LOCAL_MODEL` (the served name, e.g. `qwen38`).
 
 If `just` is not installed, every recipe in `justfile` is one or two plain commands.
 
@@ -62,8 +75,15 @@ photos ─► echoes ingest ─► echoes preprocess ─► echoes transcribe �
 - **export**: Parquet + images into `ui/public/data`; the site reads Parquet in the browser.
 
 Engines: `local` (vLLM, default), `gemini` (best value cloud, needs `GEMINI_API_KEY`),
-`claude` (top performer, needs `ANTHROPIC_API_KEY`). `just ceiling` runs the gold pages
-through Claude to measure how far the local model is from the frontier.
+`claude` (top performer). `claude` needs no API key: it runs `claude -p` through the logged-in
+Claude Code CLI on your subscription (only the `Read` tool enabled, images staged in a scratch
+directory, structured JSON output); with `ANTHROPIC_API_KEY` set it uses the SDK instead, and
+`claude-cli` / `claude-api` force either. `just ceiling` runs the gold pages through Claude to
+measure how far the local model is from the frontier.
+
+Working on this repo with a Claude agent: `CLAUDE.md` holds the conventions and
+`docs/agent-brief.md` the experiment plan it should follow on the workstation. Extra feature
+ideas live in `docs/ideas.md`.
 
 ## UI
 

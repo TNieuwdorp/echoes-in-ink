@@ -73,7 +73,7 @@ def preprocess(
 
 @app.command()
 def transcribe(
-    engine: str = typer.Option("local", help="local | gemini | claude"),
+    engine: str = typer.Option("local", help="local | gemini | claude (SDK if ANTHROPIC_API_KEY, else Claude Code CLI) | claude-cli | claude-api"),
     model: str | None = None,
     page: list[str] | None = typer.Option(None, "--page", "-p"),
     letter: str | None = None,

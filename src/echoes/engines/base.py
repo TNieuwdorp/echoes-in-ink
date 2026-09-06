@@ -43,6 +43,7 @@ class Reply:
     model: str
     input_tokens: int | None = None
     output_tokens: int | None = None
+    cost_usd: float | None = None  # only cloud engines report this; the CLI gives an estimate
 
 
 class Engine(Protocol):
