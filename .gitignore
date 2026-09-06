@@ -1,0 +1,18 @@
+# data: originals and derived artefacts stay local
+data/raw/
+data/processed/
+data/*.parquet
+data/models/
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+dist/
+# node
+ui/node_modules/
+ui/dist/
+ui/public/data/
+# secrets
+.env

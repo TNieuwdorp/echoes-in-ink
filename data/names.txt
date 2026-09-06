@@ -1,0 +1,24 @@
+# One name per line. Seeded from the sample letters; grows as pages are reviewed.
+# People
+Wim Nieuwdorp
+Vader
+Moeder
+Han
+Pappa
+Gerard
+Mevrouw v. Opdorp
+Rienus
+Frits
+Wim v. Alloosel
+Donald Lawrence
+Harry
+gebrs. v. Aartsen
+Ds. Willems
+Luit. de Ham
+Drs. de Jong
+# Places and institutions
+Middelburg
+Zeeland
+Royal Neth. Inf. Depot
+B.L.A.
+Radio Oranje

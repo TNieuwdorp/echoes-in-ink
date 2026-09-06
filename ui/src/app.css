@@ -1,0 +1,63 @@
+/* Tokens follow the data-viz reference palette; light first, dark selected (not flipped). */
+:root {
+  color-scheme: light;
+  --surface-0: #f6f3ec;   /* page ground: warm paper */
+  --surface-1: #fcfcfb;   /* cards, chart surface */
+  --line: #dedbd2;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #8a887f;
+  --series-1: #2a78d6;    /* letters */
+  --series-2: #eb6834;    /* extracted events */
+  --series-3: #1baf7a;    /* people */
+  --anchor: #b5b2a7;      /* historical context track */
+  --uncertain-bg: #fff1c2;
+  --uncertain-ink: #6b4d00;
+  --reviewed: #008300;
+  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface-0: #141413;
+    --surface-1: #1a1a19;
+    --line: #33322f;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted: #8f8d84;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --anchor: #55534c;
+    --uncertain-bg: #4a3a05;
+    --uncertain-ink: #ffd766;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-0: #141413;
+  --surface-1: #1a1a19;
+  --line: #33322f;
+  --text-primary: #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted: #8f8d84;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --anchor: #55534c;
+  --uncertain-bg: #4a3a05;
+  --uncertain-ink: #ffd766;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--surface-0); color: var(--text-primary); line-height: 1.45; }
+h1, h2, h3 { font-weight: 600; letter-spacing: 0.01em; margin: 0 0 0.5rem; }
+a { color: var(--series-1); }
+button, input, select, textarea {
+  font: inherit; color: inherit; background: var(--surface-1);
+  border: 1px solid var(--line); border-radius: 6px; padding: 0.35rem 0.6rem;
+}
+button { cursor: pointer; }
+button.primary { background: var(--series-1); color: #fff; border-color: transparent; }
+.card { background: var(--surface-1); border: 1px solid var(--line); border-radius: 10px; padding: 1rem; }
+.muted { color: var(--text-muted); }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
