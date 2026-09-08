@@ -1,0 +1,11 @@
+# fetched blog content, re-fetch with scripts/fetch_posts.py
+corpus/raw/
+corpus/stats.csv
+
+# python
+__pycache__/
+.venv/
+*.pyc
+
+# claude code local settings
+.claude/settings.local.json

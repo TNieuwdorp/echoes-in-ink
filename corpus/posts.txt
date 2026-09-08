@@ -1,0 +1,16 @@
+# Seed list of Polars blog posts. One URL per line, '#' starts a comment.
+# scripts/fetch_posts.py merges this with what it finds on https://pola.rs/posts/.
+https://pola.rs/posts/announcing-polars-1/
+https://pola.rs/posts/announcing-polars-2/
+https://pola.rs/posts/polars-1-41/
+https://pola.rs/posts/polars-1-43/
+https://pola.rs/posts/polars_in_aggregrate-0.20/
+https://pola.rs/posts/polars-in-aggregate-dec25/
+https://pola.rs/posts/polars-in-aggregate-apr26/
+https://pola.rs/posts/understanding-polars-data-types/
+https://pola.rs/posts/lightweight_plotting/
+https://pola.rs/posts/polars-cloud-what-we-are-building/
+https://pola.rs/posts/polars-cloud-launch/
+https://pola.rs/posts/case-citizens/
+https://pola.rs/posts/company-announcement/
+https://pola.rs/posts/series_a/
